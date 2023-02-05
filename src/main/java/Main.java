@@ -32,6 +32,16 @@ class Bill {
     }
 }
 
+class Calculator {
+    Bill bill;
+
+    Calculator(Bill bill) {
+        this.bill = bill;
+    }
+    public double calculate() {
+        return bill.totalSum/bill.numberOfPersons;
+    }
+}
 public class Main {
 
     public static void main(String[] args) {
