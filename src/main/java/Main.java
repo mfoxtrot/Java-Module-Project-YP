@@ -103,9 +103,11 @@ public class Main {
                 System.out.print("Введите цену блюда: ");
                 if (scanner.hasNextDouble()) {
                     double inputPrice = scanner.nextDouble();
-                    Dish dish = new Dish(inputString, inputPrice);
-                    bill.addDish(dish);
-                    break;
+                    if (inputPrice>0) {
+                        Dish dish = new Dish(inputString, inputPrice);
+                        bill.addDish(dish);
+                        break;
+                    }
                 }
                 scanner.nextLine();
             }
