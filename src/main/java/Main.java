@@ -24,7 +24,7 @@ class Bill {
     }
 
     public void addDish(Dish dish) {
-        this.listOfDishes = this.listOfDishes + '\n' + dish.name;
+        this.listOfDishes = this.listOfDishes + (this.listOfDishes.length()==0 ? "" : "\n") + dish.name;
         this.totalSum += dish.price;
         System.out.println("Блюдо " + dish.name + " добавлено в чек");
     }
@@ -53,16 +53,16 @@ class Calculator {
     private String rubbleProperCase(Double sum) {
         int intSum = (int)Math.floor(sum);
 
-        if (intSum%10==1) {
+        if (intSum%10==1 && intSum%100!=11) {
             return "рубль";
         }
-        else if (intSum%10==2 && intSum!=12) {
+        else if (intSum%10==2 && intSum%100!=12) {
             return "рубля";
         }
-        else if (intSum%10==3 && intSum!=13) {
+        else if (intSum%10==3 && intSum%100!=13) {
             return "рубля";
         }
-        else if (intSum%10==4 && intSum!=14) {
+        else if (intSum%10==4 && intSum%100!=14) {
             return "рубля";
         }
         else {
@@ -80,14 +80,18 @@ public class Main {
         //Получаем количество гостей
         while (true) {
             System.out.print("На сколько гостей разбить чек? ");
-            int numberOfPersons = scanner.nextInt();
-            if (numberOfPersons>1) {
-                bill = new Bill(numberOfPersons);
-                break;
+            if (scanner.hasNextInt()) {
+                int numberOfPersons = scanner.nextInt();
+                if (numberOfPersons > 1) {
+                    bill = new Bill(numberOfPersons);
+                    break;
+                }
             }
+            scanner.nextLine();
             System.out.println("Неверное значение. Количество гостей должно быть больше 1. Попробуйте еще раз.");
         }
         scanner.nextLine();//Вынужденная мера для обхода ошибки https://stackoverflow.com/questions/23450524/java-scanner-doesnt-wait-for-user-input
+
         while (true) {
             System.out.print("Введите название блюда или команду Завершить: ");
             String inputString = scanner.nextLine();
@@ -95,11 +99,16 @@ public class Main {
                 break;
             }
 
-            System.out.print("Введите цену блюда: ");
-            double inputPrice = scanner.nextDouble();
-            Dish dish = new Dish(inputString, inputPrice);
-            bill.addDish(dish);
-
+            while (true) {
+                System.out.print("Введите цену блюда: ");
+                if (scanner.hasNextDouble()) {
+                    double inputPrice = scanner.nextDouble();
+                    Dish dish = new Dish(inputString, inputPrice);
+                    bill.addDish(dish);
+                    break;
+                }
+                scanner.nextLine();
+            }
             scanner.nextLine();//аналогично, комментарию выше
         }
 
